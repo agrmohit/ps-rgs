@@ -4,7 +4,38 @@ body {
     sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+/* Code below has been converted from LESS */
+/* Nerdy secret: You can use "less" below! Don't tell anybody... */
+
+.github-profile {
+  margin: 1rem;
+}
+
+.github-profile img {
+  width: 75px;
+}
+
+.github-profile .info {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.github-profile .info .name {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+form {
+  border: thin solid hsl(0, 0%, 87%);
+  background-color: hsl(0, 0%, 98%);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.header {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
