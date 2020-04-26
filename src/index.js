@@ -32,7 +32,8 @@ const PlayAgain = (props) => (
   </div>
 );
 
-const Game = (props) => {
+// Custom hook
+const useGameState = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
   const [availableNumbers, setAvailableNumbers] = useState(utils.range(1, 9));
   const [candidateNumbers, setCandidateNumbers] = useState([]);
@@ -47,7 +48,40 @@ const Game = (props) => {
     }
   }, [availableNumbers.length, secondsLeft]);
 
+  const setGameState = (newCandidateNumbers) => {
+    if (utils.sum(newCandidateNumbers) !== stars) {
+      console.log("1 done");
+      setCandidateNumbers(newCandidateNumbers);
+    } else {
+      const newAvailableNumbers = availableNumbers.filter(
+        (n) => !newCandidateNumbers.includes(n)
+      );
+      setStars(utils.randomSumIn(newAvailableNumbers, 9));
+      setAvailableNumbers(newAvailableNumbers);
+      setCandidateNumbers([]);
+    }
+  };
+
+  return {
+    stars,
+    availableNumbers,
+    candidateNumbers,
+    secondsLeft,
+    setGameState,
+  };
+};
+
+const Game = (props) => {
+  const {
+    stars,
+    availableNumbers,
+    candidateNumbers,
+    secondsLeft,
+    setGameState,
+  } = useGameState;
+
   const candidatesAreWrong = utils.sum(candidateNumbers) > stars;
+  console.log("2 done");
   const gameStatus =
     availableNumbers.length === 0
       ? "won"
@@ -74,16 +108,7 @@ const Game = (props) => {
         ? candidateNumbers.concat(buttonNumber)
         : candidateNumbers.filter((cn) => cn !== buttonNumber);
 
-    if (utils.sum(newCandidateNumbers) !== stars) {
-      setCandidateNumbers(newCandidateNumbers);
-    } else {
-      const newAvailableNumbers = availableNumbers.filter(
-        (n) => !newCandidateNumbers.includes(n)
-      );
-      setStars(utils.randomSumIn(newAvailableNumbers, 9));
-      setAvailableNumbers(newAvailableNumbers);
-      setCandidateNumbers([]);
-    }
+    setGameState(newCandidateNumbers);
   };
 
   return (
@@ -146,6 +171,7 @@ const utils = {
       for (let j = 0, len = sets.length; j < len; j++) {
         const candidateSet = sets[j].concat(arr[i]);
         const candidateSum = utils.sum(candidateSet);
+        console.log("3 done");
         if (candidateSum <= max) {
           sets.push(candidateSet);
           sums.push(candidateSum);
